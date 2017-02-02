@@ -8,11 +8,17 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting.STAExtensions
     using System.Threading;
 
     /// <summary>
-    /// STATesClassAttribute defines [STATestClass] which runs all the test methods of the class in question under STAThread
+    /// Defines [STATestClass] attribute which runs all the test methods of a class under STAThread
     /// Note: STATestMethod Attribute is not required on test method if this attribute is defined at class level
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class STATestClassAttribute : TestClassAttribute
     {
+        /// <summary>
+        /// Get TestMethod Attribute 
+        /// </summary>
+        /// <param name="testMethodAttribute">the Test Method Attribute</param>
+        /// <returns><see cref="TestMethodAttribute"/>.</returns>
         public override TestMethodAttribute GetTestMethodAttribute(TestMethodAttribute testMethodAttribute)
         {
             // User decorated both testclass and testmethod as STATestClass and STATestMethod respectively

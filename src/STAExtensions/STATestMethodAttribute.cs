@@ -11,13 +11,21 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting.STAExtensions
     using System.Text;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Defines [STATestMethod] attribute which runs the specified test method under STAThread
+    /// Note: Using this under a class with [STATestClass] Attribute is redundant.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class STATestMethodAttribute : TestMethodAttribute
     {
         private TestMethodAttribute actualTestMethodAttribute;
 
         private IThreadManagerFactory threadManagerFactory;
 
-        public STATestMethodAttribute()
+        /// <summary>
+        /// Default constructor for reflection
+        /// </summary>
+        public STATestMethodAttribute() : this(null, ThreadManagerFactory.Instance)
         {
             // Default constructor for reflection - Type.GetCustomAttributes API
         }
@@ -29,6 +37,11 @@ namespace Microsoft.VisualStudio.TestTools.UnitTesting.STAExtensions
             this.threadManagerFactory = threadManagerFactory;
         }
 
+        /// <summary>
+        /// Executes the ITestMethod in a STA Thread
+        /// </summary>
+        /// <param name="testMethod">TestMethod to invoke</param>
+        /// <returns>TestResult of the execution</returns>
         public override TestResult[] Execute(ITestMethod testMethod)
         {
             Func<TestResult[]> func = () =>

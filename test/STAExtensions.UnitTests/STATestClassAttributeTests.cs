@@ -24,7 +24,8 @@ namespace STAExtensions.UnitTests
             var defaultMethodAttr = new TestMethodAttribute();
             var actualMethodAttr = classAttr.GetTestMethodAttribute(defaultMethodAttr);
 
-            Assert.IsInstanceOfType(actualMethodAttr, typeof(STATestMethodAttribute), "GetTestMethodAttribute must return STATestMethodattribute if passed default STATestMethodAttribute.");
+            Assert.IsInstanceOfType(actualMethodAttr, typeof(STATestMethodAttribute), 
+                "GetTestMethodAttribute must return STATestMethodattribute if passed default STATestMethodAttribute.");
         }
 
         [TestMethod]

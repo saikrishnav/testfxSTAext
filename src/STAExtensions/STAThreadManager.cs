@@ -3,7 +3,6 @@
 namespace Microsoft.TestFx.STAExtensions
 {
     using Microsoft.TestFx.STAExtensions.Interfaces;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -66,8 +65,14 @@ namespace Microsoft.TestFx.STAExtensions
         {
             if (staThread != null && staThread.IsAlive)
             {
-                runCompletedAvailableWaithHandle.Set();
-                staThread.Join();
+                this.runCompletedAvailableWaithHandle.Set();
+                // TODO: Better way to cleanup
+                //if(!staThread.Join(10))
+                //{
+                //    staThread.Abort();
+                //    staThread.Join();
+                //}
+                this.staThread = null;
             }
         }
 

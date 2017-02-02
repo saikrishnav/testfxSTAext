@@ -133,7 +133,8 @@ namespace STAExtensions.UnitTests
                     return expectedRetValue;
                 });
 
-            Assert.AreEqual(managedThreadIdOfExceptionFunc, managedThreadIdOfLaterFunc, "STAThreadManager must not use same thread even after exception in a function.");
+            Assert.AreEqual(managedThreadIdOfExceptionFunc, managedThreadIdOfLaterFunc, 
+                "STAThreadManager must not use same thread even after exception in a function.");
 
             staThreadManager.Dispose();
         }

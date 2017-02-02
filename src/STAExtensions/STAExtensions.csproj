@@ -1,21 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
     <RootNamespace>Microsoft.TestFx.STAExtensions</RootNamespace>
-    <AssemblyName>Microsoft.TestFx.STAEx</AssemblyName>
+    <AssemblyName>Microsoft.VisualStudio.TestTools.UnitTesting.STAExtensions</AssemblyName>
+    <DocumentationFile>..\..\artifacts\Debug\STAExtensions\Microsoft.VisualStudio.TestTools.UnitTesting.STAExtensions.xml</DocumentationFile>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\artifacts\Debug\STAExtensions\</OutputPath>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\artifacts\Release\STAExtensions\</OutputPath>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="MSTest.TestFramework" Version="1.0.8-rc2" />
   </ItemGroup>
-
 </Project>

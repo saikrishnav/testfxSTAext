@@ -23,6 +23,23 @@ namespace STAExtensions.UnitTests
         }
 
         [TestMethod]
+        public void ExecuteMustSucceedWithDefaultConstructor()
+        {
+            // Mimics default constructor
+            var attr = new STATestMethodAttribute();
+            var mockITestMethod = new Mock<ITestMethod>();
+
+            var retValue = new TestResult();
+            mockITestMethod.Setup(mi => mi.Invoke(It.IsAny<object[]>())).Returns(retValue);
+            // Must not fail
+            var actualRetValue = attr.Execute(mockITestMethod.Object);
+
+            Assert.IsNotNull(actualRetValue, "Execute must return a valid non-null value.");
+            Assert.AreEqual(1, actualRetValue.Count(), "Execute must return result array with one item.");
+            Assert.AreEqual(retValue, actualRetValue.First(), "Execute must return correct result");
+        }
+
+        [TestMethod]
         public void ExecuteMustCallTheFactoryAndUseSTAThreadManagerToExecuteTheMethod()
         {
             var mockFactory = new Mock<IThreadManagerFactory>();

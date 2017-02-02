@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MSTest.STAExtensions</id>
+    <version>1.0.0-beta</version>
+    <authors>Sai Krishna Vajjala</authors>
+    <owners>Sai Krishna Vajjala</owners>
+    <title>MSTest.STAExtensions</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+	 STA Extensions for the Microsoft Test Framework - MSTest V2
+    </description>
+    <tags>MSTest TestFramework STA Unittest MSTestV2 Test Testing TDD Framework</tags>
+  </metadata>
+  <files>
+    <file src="..\artifacts\Release\STAExtensions\net45\Microsoft.VisualStudio.TestTools.UnitTesting.STAExtensions.dll" target="lib\net45" />
+    <file src="..\artifacts\Release\STAExtensions\net45\Microsoft.VisualStudio.TestTools.UnitTesting.STAExtensions.xml" target="lib\net45" />
+  </files>
+</package>
