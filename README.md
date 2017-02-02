@@ -11,7 +11,7 @@ public class SampleTestClass
     public void Test1 () {....}
     [TestMethod]
     public void Test2 () {....}
-    [STATestMethod] // Using STATestMethod inside a class which is already marked STATestClass is redundant
+    [STATestMethod] // Using STATestMethod inside a class which is already marked STA is redundant
     public void Test3 () {....}
 }
 ```
@@ -25,7 +25,7 @@ public class SampleTestClass
     public void Test1 () {....}
     [TestMethod]
     public void Test2 () {....}
-    [STATestMethod] // Class is marked as STA - so only this method runs in STA - above tests run in MTA
+    [STATestMethod] // Class is NOT marked as STA - so only this method runs in STA - above tests run in MTA
     public void Test3 () {....}
 }
 ```
