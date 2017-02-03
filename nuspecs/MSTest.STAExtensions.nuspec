@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MSTest.STAExtensions</id>
-    <version>1.0.0-beta</version>
+    <version>1.0.2-beta</version>
     <authors>Sai Krishna Vajjala</authors>
     <owners>Sai Krishna Vajjala</owners>
     <title>MSTest.STAExtensions</title>
