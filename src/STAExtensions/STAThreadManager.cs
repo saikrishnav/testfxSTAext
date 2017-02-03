@@ -24,6 +24,8 @@ namespace Microsoft.TestFx.STAExtensions
 
         private object lockObject = new object();
 
+        private bool disposing = false;
+
         public T Execute(Func<T> functionToExecuteOnThread)
         {
             lock (lockObject)
@@ -56,26 +58,6 @@ namespace Microsoft.TestFx.STAExtensions
             }
         }
 
-        ~STAThreadManager()
-        {
-            this.Dispose();
-        }
-
-        public void Dispose()
-        {
-            if (staThread != null && staThread.IsAlive)
-            {
-                this.runCompletedAvailableWaithHandle.Set();
-                // TODO: Better way to cleanup
-                //if(!staThread.Join(10))
-                //{
-                //    staThread.Abort();
-                //    staThread.Join();
-                //}
-                this.staThread = null;
-            }
-        }
-
         private void EnsureThreadInitialized()
         {
             if (this.staThread == null)
@@ -85,6 +67,37 @@ namespace Microsoft.TestFx.STAExtensions
                 this.staThread.SetApartmentState(ApartmentState.STA);
                 this.staThread.Name = "testfxSTAExThread";
                 this.staThread.Start();
+
+                // MsTestV2 has no way of telling the extensions that test run is complete so that they can cleanup
+                // So we need to rely on AppDomain unload event to clean up resources
+                // Destructor is useless as it gets called after AppDomain.unload killed all our threads
+                // If we let the unload, it will throw "AppDomainUnloadedException" if any threads are still alive at the time
+                AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
+            }
+        }
+
+        private void CurrentDomain_DomainUnload(object sender, EventArgs e)
+        {
+            AppDomain.CurrentDomain.DomainUnload -= CurrentDomain_DomainUnload;
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (!this.disposing)
+            {
+                this.disposing = true;
+                if (this.staThread != null && this.staThread.IsAlive)
+                {
+                    this.runCompletedAvailableWaithHandle.Set();
+                    // TODO: Better way to cleanup - 100ms is really arbitrary
+                    if (!this.staThread.Join(100))
+                    {
+                        this.staThread.Abort();
+                        this.staThread.Join();
+                    }
+                    this.staThread = null;
+                }
             }
         }
 
@@ -96,15 +109,27 @@ namespace Microsoft.TestFx.STAExtensions
                 var waitResult = WaitHandle.WaitAny(new WaitHandle[2] { actionAvailableWaithHandle, runCompletedAvailableWaithHandle });
                 if (waitResult == 0)
                 {
-                    if (functionToExecuteOnThread != null)
+                    if (this.functionToExecuteOnThread != null)
                     {
                         try
                         {
-                            this.taskCompletionSource?.SetResult(functionToExecuteOnThread.Invoke());
+                            this.taskCompletionSource?.SetResult(this.functionToExecuteOnThread.Invoke());
                         }
                         catch (Exception ex)
                         {
-                            this.taskCompletionSource?.SetException(ex);
+                            if(disposing)
+                            {
+                                if(ex is ThreadAbortException)
+                                {
+                                    Thread.ResetAbort();
+                                }
+                                // Disposing, just exit the thread cleanly
+                                waitForActions = false;
+                            }
+                            else 
+                            {
+                                this.taskCompletionSource?.SetException(ex);
+                            }
                         }
                     }
                 }
