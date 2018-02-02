@@ -1,8 +1,9 @@
 # TestFx STA Extension
-STA extension for MSTest framework and adapter <br/>
-Adds the ability to run tests in STA thread for unit tests that depend on COM, OLE and UI components. <br/>
-<br/>
-Usage 1: <br/>
+STA extension for MSTest framework and adapter  
+Adds the ability to run tests in STA thread for unit tests that depend on COM, OLE and UI components.  
+  
+### Usage 1:
+  
 ```C#
 [STATestClass] // Runs all tests [ test1, test2, test3 ] in this class in STA thread
 public class SampleTestClass
@@ -15,8 +16,9 @@ public class SampleTestClass
     public void Test3 () {....}
 }
 ```
-<br/>
-Usage 2: <br/>
+  
+### Usage 2:
+  
 ```C#
 [TestClass] // Runs all tests except Test3 in this class as MTA
 public class SampleTestClass
